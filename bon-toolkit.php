@@ -334,7 +334,7 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 
 
 				wp_register_script( 'googlemap3', 'http://maps.googleapis.com/maps/api/js?sensor=false', false, false, false );
-				wp_register_script( 'bon-toolkit-map', trailingslashit( BON_TOOLKIT_JS ) . 'map.js', array('jquery', 'googlemap3'), '1.0.0', true );
+				wp_register_script( 'bon-toolkit-map', trailingslashit( BON_TOOLKIT_JS ) . 'map.min.js', array('jquery', 'googlemap3'), '1.0.0', true );
 
 				if( !wp_script_is( 'fitvids', 'registered' )) {
 					wp_register_script( 'fitvids', trailingslashit( BON_TOOLKIT_JS ) . 'jquery.fitvids.js', array('jquery'), '1.0.2', true );
@@ -343,7 +343,7 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 				wp_register_script( 'jplayer', trailingslashit( BON_TOOLKIT_JS ) . 'jplayer/jquery.jplayer.min.js', array('jquery'), false, false );
 				wp_enqueue_script( 'jplayer' );
 
-				wp_register_script( 'bon-toolkit', trailingslashit( BON_TOOLKIT_JS ) . 'toolkit.js', array('jquery','fitvids'), '1.0.0', true );
+				wp_register_script( 'bon-toolkit', trailingslashit( BON_TOOLKIT_JS ) . 'toolkit.min.js', array('jquery','fitvids'), '1.0.0', true );
 				wp_enqueue_script( 'bon-toolkit' );
 
 				wp_localize_script( 'bon-toolkit', 'bon_toolkit_ajax', array('url' => admin_url('admin-ajax.php')) );
