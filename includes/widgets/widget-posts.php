@@ -38,7 +38,7 @@ class Bon_Toolkit_Widget_Posts extends WP_Widget {
 
 		/* Set up the widget options. */
 		$widget_options = array(
-			'classname' => 'bon-toolkit-posts-widget hide-for-small',
+			'classname' => 'bon-toolkit-posts-widget',
 			'description' => esc_html__( 'An advanced widget that gives you query your latest posts from various post types and terms.', 'bon-toolkit' )
 		);
 
@@ -138,7 +138,7 @@ class Bon_Toolkit_Widget_Posts extends WP_Widget {
 							?>
 						</header>
 						<div class="item-content padding-medium">
-							<a href="<?php the_permalink(); ?>" class="button flat blue radius" title="<?php the_title_attribute( array( 'before' => __( 'Permalink to ', 'bon-toolkit' ) ) ); ?>"><?php _e( 'Read more', 'bon' ); ?></a>
+							<a href="<?php the_permalink(); ?>" class="button flat wet-asphalt radius" title="<?php the_title(); ?>"><?php _e( 'Read more', 'bon' ); ?></a>
 						</div>
 					</div>
 					<?php
