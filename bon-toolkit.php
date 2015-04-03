@@ -165,10 +165,10 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 			if ( get_option( $this->option_name ) === false ) {
 
 			    // The option hasn't been added yet. We'll add it with $autoload set to 'no'.
-			    $deprecated = null;
-			    $autoload = 'no';
-			    
-			    add_option( $this->option_name, $new_val, $deprecated, $autoload );
+				$deprecated = null;
+				$autoload = 'no';
+				
+				add_option( $this->option_name, $new_val, $deprecated, $autoload );
 
 			}
 
@@ -307,30 +307,34 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 				if ( ! defined( 'BON_TOOLKIT_USE_FONT_AWESOME' ) ) {
 					define( 'BON_TOOLKIT_USE_FONT_AWESOME', $bon_toolkit_options['use_bon_toolkit_fontawesome'] == 'yes' ? true : false );
 				}
-				
-				if ( BON_TOOLKIT_USE_CSS ) {
-					wp_register_style( 'bon_toolkit', trailingslashit( BON_TOOLKIT_CSS ) . 'toolkit.css', false, '1.0.0' );
-					wp_enqueue_style( 'bon_toolkit' );
-				}
 
-				if ( !class_exists( 'BON_Main') ) {
-					wp_register_style( 'bon_toolkit_font_awesome', trailingslashit( BON_TOOLKIT_CSS ) . 'font-awesome.css', false, '3.2.1' );
-					wp_enqueue_style( 'bon_toolkit_font_awesome' );
-				}
+				if (WP_ENV !== 'production') {
 
-				wp_register_style( 'bon_toolkit_font_style', trailingslashit( BON_TOOLKIT_CSS ) . 'bt-social.css', false, '1.0.0' );
-				wp_enqueue_style( 'bon_toolkit_font_style' );
-				
+					if ( BON_TOOLKIT_USE_CSS ) {
+						wp_register_style( 'bon_toolkit', trailingslashit( BON_TOOLKIT_CSS ) . 'toolkit.css', false, '1.0.0' );
+						wp_enqueue_style( 'bon_toolkit' );
+					}
 
-				if ( $this->check_options('enable_social_widget') === true ) {
-					wp_register_style( 'bon_toolkit_icon_style', trailingslashit( BON_TOOLKIT_CSS ) . 'social-icon.css', array('bon_toolkit_font_style'), '1.0.0');
-					wp_enqueue_style( 'bon_toolkit_icon_style' );
+					if ( !class_exists( 'BON_Main') ) {
+						wp_register_style( 'bon_toolkit_font_awesome', trailingslashit( BON_TOOLKIT_CSS ) . 'font-awesome.css', false, '3.2.1' );
+						wp_enqueue_style( 'bon_toolkit_font_awesome' );
+					}
+
+					wp_register_style( 'bon_toolkit_font_style', trailingslashit( BON_TOOLKIT_CSS ) . 'bt-social.css', false, '1.0.0' );
+					wp_enqueue_style( 'bon_toolkit_font_style' );
+					
+
+					if ( $this->check_options('enable_social_widget') === true ) {
+						wp_register_style( 'bon_toolkit_icon_style', trailingslashit( BON_TOOLKIT_CSS ) . 'social-icon.css', array('bon_toolkit_font_style'), '1.0.0');
+						wp_enqueue_style( 'bon_toolkit_icon_style' );
+					}
+
 				}
 
 				$bon_toolkit_params = array(
 					'plugin_url'                       => $this->plugin_url(),
 					'ajax_url'                         => $this->ajax_url(),
-				);
+					);
 
 
 				wp_register_script( 'googlemap3', 'http://maps.googleapis.com/maps/api/js?sensor=false', false, false, false );
@@ -376,19 +380,19 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 					<!-- Settings navigation -->
 					<ul class="tab-nav">
 						<?php 
-							foreach ( $menus as $menu ) {
-								echo $menu;
-							}
+						foreach ( $menus as $menu ) {
+							echo $menu;
+						}
 						?>
 					</ul>
 					
 					<div class="bon-toolkit-admin">
 						<div id="bon-toolkit-options">
-						<?php 
+							<?php 
 							foreach ( $fields as $field ) {
 								echo $field;
 							}
-						?>
+							?>
 							
 						</div><!-- toolkit options -->
 					</div><!-- toolkit admin -->
@@ -451,84 +455,84 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 				
 				case 'section' :
 
-					$menu .= '<li><a id="nav-'.esc_attr($id).'" href="#">'.$label.'</a></li>';
+				$menu .= '<li><a id="nav-'.esc_attr($id).'" href="#">'.$label.'</a></li>';
 
-					$o .= '<div id="'. esc_attr( $id ) . '" class="box '.esc_attr($class).'">';
+				$o .= '<div id="'. esc_attr( $id ) . '" class="box '.esc_attr($class).'">';
 
 				break; 
 
 				case 'select' :
-					$o .= '
-					<div class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'">
-						<strong>'. $label .'</strong>
-						
-						<div class="options">
-							<select name="' .$this->option_name . '['  . esc_attr( $name ) . ']" id="' . esc_attr( $id ) . '">'; 
-								foreach ( $options as $val => $option ) {
-									$o .= '<option' . selected( $meta, $val, false ) . ' value="' . $val . '">' . $option . '</option>';
-								}
-								$o .= '</select>
-								' . $desc . '	
-						</div>
-					</div><!-- setting -->';
+				$o .= '
+				<div class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'">
+				<strong>'. $label .'</strong>
+				
+				<div class="options">
+				<select name="' .$this->option_name . '['  . esc_attr( $name ) . ']" id="' . esc_attr( $id ) . '">'; 
+				foreach ( $options as $val => $option ) {
+					$o .= '<option' . selected( $meta, $val, false ) . ' value="' . $val . '">' . $option . '</option>';
+				}
+				$o .= '</select>
+				' . $desc . '	
+				</div>
+				</div><!-- setting -->';
 				break; 
 
 				case 'checkbox' :
-					$o .= '
-					<div id="setting-'.esc_attr($id).'" class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'" >
-						<strong>'. $label .'</strong>
-						
-						<div class="options">
-							<input type="checkbox" class="bon-input" name="'.$this->option_name . '[' . esc_attr( $name ) . ']" id="' . esc_attr( $id ) . '" ' . checked( $meta, true, false ) . ' value="1" />
-									<label for="' . esc_attr( $id ) . '">' . $desc . '</label>	
-						</div>
-					</div><!-- setting -->';
+				$o .= '
+				<div id="setting-'.esc_attr($id).'" class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'" >
+				<strong>'. $label .'</strong>
+				
+				<div class="options">
+				<input type="checkbox" class="bon-input" name="'.$this->option_name . '[' . esc_attr( $name ) . ']" id="' . esc_attr( $id ) . '" ' . checked( $meta, true, false ) . ' value="1" />
+				<label for="' . esc_attr( $id ) . '">' . $desc . '</label>	
+				</div>
+				</div><!-- setting -->';
 				break;
 
 				case 'text' :
-					$o .= '
-					<div id="setting-'.esc_attr($id).'" class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'" >
-						<strong>'. $label .'</strong>
-						
-						<div class="options">
-							<input type="text" class="bon-input" name="'.$this->option_name . '[' . esc_attr( $name ) . ']" id="' . esc_attr( $id ) . '" value="'.$meta.'" />
-									<br /><br />' . $desc . '
-						</div>
-					</div><!-- setting -->';
+				$o .= '
+				<div id="setting-'.esc_attr($id).'" class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'" >
+				<strong>'. $label .'</strong>
+				
+				<div class="options">
+				<input type="text" class="bon-input" name="'.$this->option_name . '[' . esc_attr( $name ) . ']" id="' . esc_attr( $id ) . '" value="'.$meta.'" />
+				<br /><br />' . $desc . '
+				</div>
+				</div><!-- setting -->';
 				break;
 
 				case 'multicheck' :
 
-					$o .= '<div id="setting-'.esc_attr($id).'" class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'" >';
-					$o .= '<strong>'. $label .'</strong><div class="options">';
+				$o .= '<div id="setting-'.esc_attr($id).'" class="setting '.esc_attr($class).'" data-toggle="' . ((isset($toggle)) ? 'setting-' . esc_attr($toggle) : '') .'" >';
+				$o .= '<strong>'. $label .'</strong><div class="options">';
 
-					$o .= '<ul>';
-					foreach ( $options as $val => $option ) {
-						$c_name = $this->option_name . '[' . esc_attr( $name ) .'][]';
-						$checked = '';
-						if( $meta && is_array( $meta ) ) {
-							$checked = checked( in_array( $val, $meta ), 1, false);
-						}
-						$o .= '<li class="opt"><input type="checkbox" value="'.$val.'" name="' . $c_name . '" id="' . esc_attr( $id ) . '-' . $val . '"' . $checked . ' /> 
-								<label for="' . esc_attr( $id ) . '-' . $val . '">' . $option . '</label></li>';
+				$o .= '<ul>';
+				foreach ( $options as $val => $option ) {
+					$c_name = $this->option_name . '[' . esc_attr( $name ) .'][]';
+					$checked = '';
+					if( $meta && is_array( $meta ) ) {
+						$checked = checked( in_array( $val, $meta ), 1, false);
 					}
-					$o .= '</ul><br/>' . $desc .'</div></div>'; 
+					$o .= '<li class="opt"><input type="checkbox" value="'.$val.'" name="' . $c_name . '" id="' . esc_attr( $id ) . '-' . $val . '"' . $checked . ' /> 
+					<label for="' . esc_attr( $id ) . '-' . $val . '">' . $option . '</label></li>';
+				}
+				$o .= '</ul><br/>' . $desc .'</div></div>'; 
 
 				break;
 
 				case 'section_close':
-					$o .= '</div>';
+				$o .= '</div>';
 				break;
 
 				case 'help':
-					$o .= '<div class="setting help">';
-					$o .= '<h3>'.esc_attr($label).'</h3>';
-					$o .= ( isset( $field['desc'] ) ? '<div>' . $field['desc'] . '</div>' : null);
-					$o .= '</div>';
+				$o .= '<div class="setting help">';
+				$o .= '<h3>'.esc_attr($label).'</h3>';
+				$o .= ( isset( $field['desc'] ) ? '<div>' . $field['desc'] . '</div>' : null);
+				$o .= '</div>';
 				break;
 
 				case 'info' :
-					$o .= '<p class="settings-info">'.$std.'</p>';
+				$o .= '<p class="settings-info">'.$std.'</p>';
 				break;
 			}
 
@@ -552,7 +556,7 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 				'bon-toolkit-video-widget' => array('key_option' => 'enable_video_widget', 'file' => 'widget-video'),
 				'bon-toolkit-contact-form-widget' => array('key_option' => 'enable_contactform_widget', 'file' => 'widget-contactform'),
 				'bon-toolkit-post-widget' => array('key_option' => 'enable_posts_widget', 'file' => 'widget-posts'),
-			);
+				);
 
 			$widget_arr = apply_filters( 'bon_toolkit_filter_widget_opt', $widget_arr );
 			
@@ -573,7 +577,7 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 				'bon-toolkit-pages-widget' => array('key_option' => 'enable_advanced_pages', 'file' => 'widget-pages'),
 				'bon-toolkit-search-widget' => array('key_option' => 'enable_advanced_search', 'file' => 'widget-search'),
 				'bon-toolkit-tags-widget' => array('key_option' => 'enable_advanced_tags', 'file' => 'widget-tags'),
-			);
+				);
 
 			foreach($ad_arr as $key => $value) {
 				if( $this->check_options( esc_attr( $value['key_option'] ) ) === true && current_theme_supports( 'bon-advanced-widget' ) ) {
@@ -593,7 +597,7 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 				'bon-review' =>  array('key_option' => 'enable_review', 'file' => 'review'),
 				'bon-testimonial' =>  array('key_option' => 'enable_testimonial', 'file' => 'testimonial'),
 				'bon-quiz' =>  array('key_option' => 'enable_quiz', 'file' => 'quiz'),
-			);
+				);
 
 			if( !class_exists('BON_Main') || !class_exists('BON_Cpt') || !class_exists('BON_Metabox') ) {
 				// class is needed in order to create the CPT and MetaBox
@@ -685,50 +689,50 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 		public function set_builder_suffix() {
 			
 			$suffix = apply_filters('bon_tookit_builder_suffix_filters', array(
-		        'post' => 'builder_post_',
-		        'contact_form' => 'builder_contact_form_',
-		        'tab' => 'builder_tab_',
-		        'toggle' => 'builder_toggle_',
-		        'call_to_action' => 'builder_call_to_action_',
-		        'post_content' => 'builder_post_content_',
-		        'service' => 'builder_service_',
-		        'text_block' => 'builder_text_block_',
-		        'divider' => 'builder_divider_',
-		        'alert' => 'builder_alert_',
-		        'video' => 'builder_video_',
-		        'map' => 'builder_map_',
-		        'audio' => 'builder_audio_',
-		        'listing' => 'builder_listing_',
-		        'portfolio' => 'builder_portfolio_',
-		        'widget' => 'builder_widget_',
-		        'twitter' => 'builder_twitter_',
-		        'dribbble' => 'builder_dribbble_',
-		        'flickr' => 'builder_flickr_',
-		        'menu' => 'builder_menu_',
-		        'archive' => 'builder_archive_',
-		        'category' => 'builder_category_',
-		        'shop' => 'builder_shop_',
-		        'calendar' => 'builder_calendar_',
-		        'rss' => 'builder_rss_',
-		        'author' => 'builder_author_',
-		        'page' => 'builder_page_',
-		        'image_block' => 'builder_image_block_'
-		    ));
+				'post' => 'builder_post_',
+				'contact_form' => 'builder_contact_form_',
+				'tab' => 'builder_tab_',
+				'toggle' => 'builder_toggle_',
+				'call_to_action' => 'builder_call_to_action_',
+				'post_content' => 'builder_post_content_',
+				'service' => 'builder_service_',
+				'text_block' => 'builder_text_block_',
+				'divider' => 'builder_divider_',
+				'alert' => 'builder_alert_',
+				'video' => 'builder_video_',
+				'map' => 'builder_map_',
+				'audio' => 'builder_audio_',
+				'listing' => 'builder_listing_',
+				'portfolio' => 'builder_portfolio_',
+				'widget' => 'builder_widget_',
+				'twitter' => 'builder_twitter_',
+				'dribbble' => 'builder_dribbble_',
+				'flickr' => 'builder_flickr_',
+				'menu' => 'builder_menu_',
+				'archive' => 'builder_archive_',
+				'category' => 'builder_category_',
+				'shop' => 'builder_shop_',
+				'calendar' => 'builder_calendar_',
+				'rss' => 'builder_rss_',
+				'author' => 'builder_author_',
+				'page' => 'builder_page_',
+				'image_block' => 'builder_image_block_'
+				));
 
-			return $suffix;
-		}
+return $suffix;
+}
 
-		function flush_rewrite() {
+function flush_rewrite() {
 		    // First, we "add" the custom post type via the above written function.
 		    // Note: "add" is written with quotes, as CPTs don't get added to the DB,
 		    // They are only referenced in the post_type column with a post entry, 
 		    // when you add a post of this CPT.
-		    $this->set_cpt_features();
+	$this->set_cpt_features();
 
 		    // ATTENTION: This is *only* done during plugin activation hook in this example!
 		    // You should *NEVER EVER* do this on every page load!!
-		    flush_rewrite_rules();
-		}
+	flush_rewrite_rules();
+}
 
 	} // end class
 
