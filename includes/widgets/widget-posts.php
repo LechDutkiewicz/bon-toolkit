@@ -67,6 +67,7 @@ class Bon_Toolkit_Widget_Posts extends WP_Widget {
 		$instance['term'] = $new_term;
 		/* Set the $args for wp_get_archives() to the $instance array. */
 		$args = $instance;
+		$button_color = bon_get_option( 'search_button_color', 'red' );
 
 		/* Overwrite the $echo argument and set it to false. */
 		$args['echo'] = false;
@@ -138,7 +139,7 @@ class Bon_Toolkit_Widget_Posts extends WP_Widget {
 							?>
 						</header>
 						<div class="item-content padding-medium">
-							<a href="<?php the_permalink(); ?>" class="button flat wet-asphalt radius" title="<?php the_title(); ?>"><?php _e( 'Read more', 'bon' ); ?></a>
+							<a href="<?php the_permalink(); ?>" class="button flat $button_color radius" title="<?php the_title(); ?>"><?php _e( 'Read more', 'bon' ); ?></a>
 						</div>
 					</div>
 					<?php
