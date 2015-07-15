@@ -72,6 +72,8 @@ var mapWidgets;
 				map.setTilt(45);
 				var markerImage = options.markerImage;
 
+				var markers = [];
+
 				$.each(markersList, function(i, coordinates){
 					var coords = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
 
@@ -80,6 +82,8 @@ var mapWidgets;
 						map: map,
 						icon: markerImage
 					});
+
+					markers.push(marker);
 
 					google.maps.event.addListener(marker, 'click', function(){
 
@@ -98,6 +102,8 @@ var mapWidgets;
 					});
 
 				});
+
+				var markerCluster = new MarkerClusterer( map, markers );
 
 			}
 
