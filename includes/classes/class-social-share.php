@@ -31,7 +31,7 @@ function bon_toolit_social_share_meta_boxes( $post_type ) {
 			$post_type, 
 			'side', 
 			'core'
-		);
+			);
 	}
 }
 
@@ -50,7 +50,7 @@ function bon_toolkit_social_share_meta_box_display( $post, $metabox ) {
 
 	<p>
 		<label for="bon-toolkit-social-share-enable"><?php _e( 'Enable social share in this page', 'bon-toolkit' ); ?>
-		<input type="checkbox" name="bon_toolkit_social_share_enable" id="bon-toolkit-social-share-enable" value="1" tabindex="30" <?php checked( true, $opt ); ?> />
+			<input type="checkbox" name="bon_toolkit_social_share_enable" id="bon-toolkit-social-share-enable" value="1" tabindex="30" <?php checked( true, $opt ); ?> />
 		</label>
 	</p>
 	<?php
@@ -69,7 +69,7 @@ function bon_toolkit_social_share_meta_box_save( $post_id, $post ) {
 
 	$meta = array(
 		'bon_toolkit_social_share_enable' => (!empty( $_POST['bon_toolkit_social_share_enable'] ) ? 1 : 0)
-	);
+		);
 
 	foreach ( $meta as $meta_key => $new_meta_value ) {
 
@@ -90,8 +90,8 @@ function bon_toolkit_social_share_meta_box_save( $post_id, $post ) {
 	}
 }
 
-function bon_toolkit_render_social_counter($output) {
-		
+function bon_toolkit_render_social_counter( $block = false ) {
+
 	if(!is_admin() && bon_toolkit_check_options('automatic_share_button') === true) {
 
 		global $bontoolkit;
@@ -106,21 +106,29 @@ function bon_toolkit_render_social_counter($output) {
 				//'linkedin',
 				'pinterest'
 				)
-		));
+			));
 
 
 		$location = $options['share_button_location'];
 
 		$social_counter = new BON_Toolkit_Social_Counter($defaults);
 
-		if( $location == 'before_post' ) {
-			add_filter('the_content', array($social_counter, 'render_before'), 999, 1);
-		} else if( $location == 'after_post' ) {
-			add_filter('the_content',  array($social_counter, 'render_after'), 999, 1);
+		if ( $block === true ) {
+
+			echo $social_counter->init();
+
+		} else {
+
+			if( $location == 'before_post' ) {
+				add_filter('the_content', array($social_counter, 'render_before'), 999, 1);
+			} else if( $location == 'after_post' ) {
+				add_filter('the_content',  array($social_counter, 'render_after'), 999, 1);
+			}
+
 		}
 
 	}	
-		
+
 }
 
 add_action('init', 'bon_toolkit_render_social_counter', 100);
@@ -139,7 +147,7 @@ class Bon_Toolkit_Social_Counter {
 		'linkedin' => 'http://www.linkedin.com/shareArticle?mini=true&url={link}&title={title}&source={source}',
 		'delicious' => 'http://www.delicious.com/save?v=5&noui&jump=close&url={link}&title={title}',
 		'pinterest' => 'http://www.pinterest.com/pin/create/button/?url={url}&media={media}&description={title}'
-	);
+		);
 
 	/**
 	 * @var string
@@ -195,7 +203,7 @@ class Bon_Toolkit_Social_Counter {
 			'count_class' => 'social-share-count',
 			'wrapper_class' => '',
 			'text' => __('Share this on :', 'bon-toolkit'),
-		);
+			);
 
 		$this->args = wp_parse_args( $args, $defaults );
 
@@ -237,7 +245,7 @@ class Bon_Toolkit_Social_Counter {
 				$this->media = $this->thumb[0];
 
 				if(is_array($this->requested_counts) && !empty($this->requested_counts)) {
-				
+
 					$output = $this->args['before'];
 
 					$output .= '<h4 class="share-text">'.$this->args['text'].'</h4>';
@@ -337,153 +345,153 @@ class Bon_Toolkit_Social_Counter {
 
 	protected function get_googleplus_count() {
 		$args = array(
-	            'method' => 'POST',
-	            'headers' => array(
-	                'Content-Type' => 'application/json'
-	            ),
-	            'body' => json_encode(array(
-	                'method' => 'pos.plusones.get',
-	                'id' => 'p',
-	                'method' => 'pos.plusones.get',
-	                'jsonrpc' => '2.0',
-	                'key' => 'p',
-	                'apiVersion' => 'v1',
-	                'params' => array(
-	                    'nolog'=>true,
-	                    'id'=> $this->url,
-	                    'source'=>'widget',
-	                    'userId'=>'@viewer',
-	                    'groupId'=>'@self'
-	                )
-	             )),
-	            'sslverify'=> false
-	        );
-	     
+			'method' => 'POST',
+			'headers' => array(
+				'Content-Type' => 'application/json'
+				),
+			'body' => json_encode(array(
+				'method' => 'pos.plusones.get',
+				'id' => 'p',
+				'method' => 'pos.plusones.get',
+				'jsonrpc' => '2.0',
+				'key' => 'p',
+				'apiVersion' => 'v1',
+				'params' => array(
+					'nolog'=>true,
+					'id'=> $this->url,
+					'source'=>'widget',
+					'userId'=>'@viewer',
+					'groupId'=>'@self'
+					)
+				)),
+			'sslverify'=> false
+			);
+
 	    // retrieves JSON with HTTP POST method for current URL 
-	    $json_string = wp_remote_post("https://clients6.google.com/rpc", $args);
-	     
-	    if (is_wp_error($json_string)){
-	        return "0";            
-	    } else {       
-	        $json = json_decode($json_string['body'], true);
-	        if( isset( $json['result'] ) ) {              
-	        	return intval( $json['result']['metadata']['globalCounts']['count'] );
-	    	} else {
-	    		return "0";
-	    	}
-	    }
+		$json_string = wp_remote_post("https://clients6.google.com/rpc", $args);
+
+		if (is_wp_error($json_string)){
+			return "0";            
+		} else {       
+			$json = json_decode($json_string['body'], true);
+			if( isset( $json['result'] ) ) {              
+				return intval( $json['result']['metadata']['globalCounts']['count'] );
+			} else {
+				return "0";
+			}
+		}
 	}
 
 	protected function get_twitter_count() {
 		// retrieves data with HTTP GET method for current URL     
-	    $json_string = wp_remote_get(
-	        'https://urls.api.twitter.com/1/urls/count.json?url='.$this->url,
-	        array(
+		$json_string = wp_remote_get(
+			'https://urls.api.twitter.com/1/urls/count.json?url='.$this->url,
+			array(
 	            // disable checking SSL sertificates
-	            'sslverify'=>false
-	        )
-	    );
-	     
+				'sslverify'=>false
+				)
+			);
+
 	    // retrives only body from previous HTTP GET request
-	    $json_string = wp_remote_retrieve_body($json_string);
-	     
+		$json_string = wp_remote_retrieve_body($json_string);
+
 	    // convert body data to JSON format
-	    $json = json_decode($json_string, true);
-	     
+		$json = json_decode($json_string, true);
+
 	    // return count of Tweets for requested URL        
-	    return (isset( $json['count'] )) ? intval( $json['count'] ) : "0";
+		return (isset( $json['count'] )) ? intval( $json['count'] ) : "0";
 	}
 
 	protected function get_facebook_count() {
 		 // retrieves data with HTTP GET method for current URL     
-	    $json_string = wp_remote_get(
-	        'https://graph.facebook.com/'.$this->url,
-	        array(
+		$json_string = wp_remote_get(
+			'https://graph.facebook.com/'.$this->url,
+			array(
 	            // disable checking SSL sertificates
-	            'sslverify'=>false
-	        )
-	    ); 
-	     
+				'sslverify'=>false
+				)
+			); 
+
 	    // retrives only body from previous HTTP GET request   
-	    $json_string = wp_remote_retrieve_body($json_string);
-	     
+		$json_string = wp_remote_retrieve_body($json_string);
+
 	    // convert body data to JSON format
-	    $json = json_decode($json_string, true);   
-	         
+		$json = json_decode($json_string, true);   
+
 	        // return count of Facebook shares for requested URL
-	        return (isset( $json['shares'] )) ? intval( $json['shares'] ) : "0";
+		return (isset( $json['shares'] )) ? intval( $json['shares'] ) : "0";
 	}
 
 	protected function get_stumbleupon_count() {
-	    $json_string = wp_remote_get(
-	        'https://www.stumbleupon.com/services/1.01/badge.getinfo?url='.$this->url,
-	        array(
-	            'sslverify'=> false
-	        )
-	    ); 
-	     
+		$json_string = wp_remote_get(
+			'https://www.stumbleupon.com/services/1.01/badge.getinfo?url='.$this->url,
+			array(
+				'sslverify'=> false
+				)
+			); 
+
 	    // retrives only body from previous HTTP GET request   
-	    $json_string = wp_remote_retrieve_body($json_string);
-	     
+		$json_string = wp_remote_retrieve_body($json_string);
+
 	    // convert body data to JSON format
-	    $json = json_decode($json_string, true);   
-	         
+		$json = json_decode($json_string, true);   
+
 	    // return count of Facebook shares for requested URL
-	    return (isset( $json['views'] )) ? intval( $json['views'] ) : "0";
+		return (isset( $json['views'] )) ? intval( $json['views'] ) : "0";
 	}
 
 	protected function get_linkedin_count() {
-	    $json_string = wp_remote_get(
-	        'https://www.linkedin.com/countserv/count/share?url='.$this->url.'&format=json',
-	        array(
-	            'sslverify'=> false
-	        )
-	    ); 
-	     
+		$json_string = wp_remote_get(
+			'https://www.linkedin.com/countserv/count/share?url='.$this->url.'&format=json',
+			array(
+				'sslverify'=> false
+				)
+			); 
+
 	    // retrives only body from previous HTTP GET request   
-	    $json_string = wp_remote_retrieve_body($json_string);
-	     
+		$json_string = wp_remote_retrieve_body($json_string);
+
 	    // convert body data to JSON format
-	    $json = json_decode($json_string, true);   
-	         
+		$json = json_decode($json_string, true);   
+
 	        // return count of Facebook shares for requested URL
-	        return (isset( $json['count'] )) ? intval( $json['count'] ) : "0";
+		return (isset( $json['count'] )) ? intval( $json['count'] ) : "0";
 	}
 
 	protected function get_pinterest_count() {
-	    $json_string = wp_remote_get(
-	        'https://api.pinterest.com/v1/urls/count.json?callback=&url='.$this->url,
-	        array(
-	            'sslverify'=> false
-	        )
-	    ); 
-	     
+		$json_string = wp_remote_get(
+			'https://api.pinterest.com/v1/urls/count.json?callback=&url='.$this->url,
+			array(
+				'sslverify'=> false
+				)
+			); 
+
 	    // retrives only body from previous HTTP GET request   
-	    $json_string = wp_remote_retrieve_body($json_string);
-	     
+		$json_string = wp_remote_retrieve_body($json_string);
+
 	    // convert body data to JSON format
-	    $json = json_decode($json_string, true);   
-	         
+		$json = json_decode($json_string, true);   
+
 	        // return count of Facebook shares for requested URL
-	        return (isset( $json['count'] )) ? intval( $json['count'] ) : "0";
+		return (isset( $json['count'] )) ? intval( $json['count'] ) : "0";
 	}
 
 	protected function get_delicious_count() {
-	    $json_string = wp_remote_get(
-	        'http://feeds.delicious.com/v2/json/urlinfo/data?url='.$this->url,
-	        array(
-	        	'sslverify' => false
-	        )
-	    ); 
-	     
+		$json_string = wp_remote_get(
+			'http://feeds.delicious.com/v2/json/urlinfo/data?url='.$this->url,
+			array(
+				'sslverify' => false
+				)
+			); 
+
 	    // retrives only body from previous HTTP GET request   
-	    $json_string = wp_remote_retrieve_body($json_string);
-	     
+		$json_string = wp_remote_retrieve_body($json_string);
+
 	    // convert body data to JSON format
-	    $json = json_decode($json_string, true);   
-	         
+		$json = json_decode($json_string, true);   
+
 	        // return count of Facebook shares for requested URL
-	        return (isset( $json[0]['total_posts'] )) ? intval( $json[0]['total_posts'] ) : "0";
+		return (isset( $json[0]['total_posts'] )) ? intval( $json[0]['total_posts'] ) : "0";
 	}
 }
 
