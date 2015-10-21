@@ -129,18 +129,26 @@ class Bon_Toolkit_Widget_Posts extends WP_Widget {
 					<div class="item clear">
 						<header class="entry-header">
 							<?php
-							if ( current_theme_supports( 'get-the-image' ) && $args['display_thumb'] == 'yes' ) {
+							if ( current_theme_supports( 'get-the-image' ) && $args['display_thumb'] == 'yes' && get_the_content() ) {
 								if ( $_SESSION['layoutType'] === 'mobile' ) {
 									$src = get_the_image( array( 'size' => 'mobile_regular', 'image_scan' => true ) );
 								} else {
 									$src = get_the_image( array( 'size' => 'listing_medium', 'image_scan' => true ) );
 								}
+							} else if ( current_theme_supports( 'get-the-image' ) && $args['display_thumb'] == 'yes' && !get_the_content() ) {
+								if ( $_SESSION['layoutType'] === 'mobile' ) {
+									$src = get_the_image( array( 'size' => 'mobile_regular', 'image_scan' => true, 'link_to_post' => false ) );
+								} else {
+									$src = get_the_image( array( 'size' => 'listing_medium', 'image_scan' => true, 'link_to_post' => false ) );
+								}
 							}
 							?>
 						</header>
-						<div class="item-content padding-medium">
+						<?php if ( get_the_content() ) { ?>
+						<div class="item-content padding-medium top">
 							<a href="<?php the_permalink(); ?>" class="button flat $button_color radius" title="<?php the_title(); ?>"><?php _e( 'Read more', 'bon' ); ?></a>
 						</div>
+						<?php } ?>
 					</div>
 					<?php
 				endwhile;
