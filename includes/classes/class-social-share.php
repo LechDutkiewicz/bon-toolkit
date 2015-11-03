@@ -97,7 +97,7 @@ function bon_toolkit_render_social_counter( $block = false ) {
 		global $bontoolkit;
 		$options = get_option( $bontoolkit->option_name );
 
-		if ( !in_array( get_post_type(), $options['disabled_locations_of_share_button'] ) ) {
+		if ( ( !empty( $options['disabled_locations_of_share_button']  ) && !in_array( get_post_type(), $options['disabled_locations_of_share_button'] ) ) || !is_array( $options['disabled_locations_of_share_button'] ) ) {
 
 			$defaults = apply_filters('bon_toolkit_render_social_counter_filter',array(
 				'social_buttons' => array(
