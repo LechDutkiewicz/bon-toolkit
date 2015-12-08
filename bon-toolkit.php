@@ -252,7 +252,7 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 		public function init() {
 
 			$this->set_widget_features();
-			$this->include_classes();
+			// $this->include_classes();
 			
 			add_action('wp_enqueue_scripts', array(&$this, 'ajax_url'));
 			
@@ -549,12 +549,12 @@ if ( ! class_exists( 'BON_Toolkit' ) ) {
 		public function set_widget_features() {
 
 			$widget_arr = array(
-				'bon-toolkit-dribbble-widget' => array('key_option' => 'enable_dribbble_widget', 'file' => 'widget-dribbble'),
-				'bon-toolkit-flickr-widget' => array('key_option' => 'enable_flickr_widget', 'file' => 'widget-flickr'),
-				'bon-toolkit-twitter-widget' => array('key_option' => 'enable_twitter_widget', 'file' => 'widget-twitter'),
+				// 'bon-toolkit-dribbble-widget' => array('key_option' => 'enable_dribbble_widget', 'file' => 'widget-dribbble'),
+				// 'bon-toolkit-flickr-widget' => array('key_option' => 'enable_flickr_widget', 'file' => 'widget-flickr'),
+				// 'bon-toolkit-twitter-widget' => array('key_option' => 'enable_twitter_widget', 'file' => 'widget-twitter'),
 				'bon-toolkit-social-widget' => array('key_option' => 'enable_social_widget', 'file' => 'widget-social'),
-				'bon-toolkit-video-widget' => array('key_option' => 'enable_video_widget', 'file' => 'widget-video'),
-				'bon-toolkit-contact-form-widget' => array('key_option' => 'enable_contactform_widget', 'file' => 'widget-contactform'),
+				// 'bon-toolkit-video-widget' => array('key_option' => 'enable_video_widget', 'file' => 'widget-video'),
+				// 'bon-toolkit-contact-form-widget' => array('key_option' => 'enable_contactform_widget', 'file' => 'widget-contactform'),
 				'bon-toolkit-post-widget' => array('key_option' => 'enable_posts_widget', 'file' => 'widget-posts'),
 				);
 
